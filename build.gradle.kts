@@ -102,13 +102,13 @@ jooq {
 				isPojosAsKotlinDataClasses = true
 
 				// Generate non-nullable types on POJO attributes, where column is not null. Default is false.
-				isKotlinNotNullPojoAttributes = false
+				isKotlinNotNullPojoAttributes = true
 
 				// Generate non-nullable types on Record attributes, where column is not null. Default is false.
-				isKotlinNotNullRecordAttributes = false
+				isKotlinNotNullRecordAttributes = true
 
 				// Generate non-nullable types on interface attributes, where column is not null. Default is false.
-				isKotlinNotNullInterfaceAttributes = false
+				isKotlinNotNullInterfaceAttributes = true
 
 				// Generate defaulted nullable POJO attributes. Default is true.
 				isKotlinDefaultedNullablePojoAttributes = true
