@@ -9,11 +9,21 @@ import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
+import java.time.LocalDateTime
 
 @Repository
 class BooksRepositoryImpl(
     private val dslContext: DSLContext,
 ) : BooksRepository {
+
+    override fun findById(bookId: Int): BooksRecord? {
+        return this.dslContext.select()
+            .from(BOOKS)
+            .where(BOOKS.BOOK_ID.eq(bookId))
+            .fetchOne()
+            ?.into(BooksRecord::class.java)
+    }
+
     override fun findByCondition(title: String?, authorId: Int?): List<BookDto> {
         val conditions = mutableListOf<Condition>()
 
@@ -44,5 +54,14 @@ class BooksRepositoryImpl(
             .returning()
             .fetchOne()
             ?: throw RuntimeException("Failed to insert into books")
+    }
+
+    override fun update(bookId: Int, title: String, authorId: Int): Int {
+        return this.dslContext.update(BOOKS)
+            .set(BOOKS.TITLE, title)
+            .set(BOOKS.AUTHOR_ID, authorId)
+            .set(BOOKS.UPDATED_AT, LocalDateTime.now())
+            .where(BOOKS.BOOK_ID.eq(bookId))
+            .execute()
     }
 }

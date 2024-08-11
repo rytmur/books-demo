@@ -48,4 +48,38 @@ class BookService(
             authorName = authorsRecord.name,
         )
     }
+
+    @Transactional(readOnly = false)
+    @Throws(IllegalArgumentException::class)
+    fun editBook(bookId: Int, title: String, authorId: Int?, authorName: String?): BookDto {
+        if (title.isBlank()) {
+            throw IllegalArgumentException("書籍のタイトルが入力されていません")
+        }
+
+        val authorsRecord: AuthorsRecord
+
+        if (authorId != null) {
+            authorsRecord = authorsRepository.findById(authorId)
+                ?: throw IllegalArgumentException("著者情報が登録されていません")
+            if (booksRepository.update(bookId, title, authorId) != 1) {
+                throw IllegalArgumentException("書籍情報が登録されていません")
+            }
+        } else {
+            if (authorName.isNullOrBlank()) {
+                throw IllegalArgumentException("著者の名前が入力・選択されていません")
+            }
+
+            authorsRecord = authorsRepository.insert(authorName)
+            if (booksRepository.update(bookId, title, authorsRecord.authorId!!) != 1) {
+                throw IllegalArgumentException("書籍情報が登録されていません")
+            }
+        }
+
+        return BookDto(
+            bookId = bookId,
+            title = title,
+            authorId = authorsRecord.authorId,
+            authorName = authorsRecord.name,
+        )
+    }
 }

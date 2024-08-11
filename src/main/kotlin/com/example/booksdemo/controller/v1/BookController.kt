@@ -42,4 +42,20 @@ class BookController(
 
         return ResponseEntity.created(location).body(book)
     }
+
+    /**
+     * 書籍情報の修正を行う
+     *
+     * @param request
+     * @return
+     */
+    @PutMapping("{bookId}")
+    fun editBook(
+        @PathVariable bookId: Int,
+        @RequestBody request: BookEditRequest,
+    ): ResponseEntity<BookDto> {
+        return ResponseEntity.ok(
+            bookService.editBook(bookId, request.title, request.authorId, request.authorName)
+        )
+    }
 }
