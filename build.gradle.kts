@@ -123,3 +123,7 @@ jooq {
 		}
 	}
 }
+
+sourceSets["main"].kotlin {
+	srcDirs(layout.buildDirectory.dir("jooq-gen").get().asFile.absolutePath)
+}
