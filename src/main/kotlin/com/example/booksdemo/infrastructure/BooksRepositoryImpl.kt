@@ -14,13 +14,6 @@ import org.springframework.stereotype.Repository
 class BooksRepositoryImpl(
     private val dslContext: DSLContext,
 ) : BooksRepository {
-    override fun findAll(): List<BooksRecord> {
-        return this.dslContext.select()
-            .from(BOOKS)
-            .fetch()
-            .into(BooksRecord::class.java)
-    }
-
     override fun findByCondition(title: String?, authorId: Int?): List<BookDto> {
         val conditions = mutableListOf<Condition>()
 
