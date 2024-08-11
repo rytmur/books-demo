@@ -36,4 +36,13 @@ class BooksRepositoryImpl(
                 )
             }
     }
+
+    override fun insert(title: String, authorId: Int): BooksRecord {
+        return this.dslContext.insertInto(BOOKS)
+            .set(BOOKS.TITLE, title)
+            .set(BOOKS.AUTHOR_ID, authorId)
+            .returning()
+            .fetchOne()
+            ?: throw RuntimeException("Failed to insert into books")
+    }
 }

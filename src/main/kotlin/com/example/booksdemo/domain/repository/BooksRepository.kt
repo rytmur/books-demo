@@ -5,4 +5,6 @@ import com.example.booksdemo.domain.dto.BookDto
 
 interface BooksRepository {
     fun findByCondition(title: String?, authorId: Int?): List<BookDto>
+
+    fun insert(title: String, authorId: Int): BooksRecord
 }
