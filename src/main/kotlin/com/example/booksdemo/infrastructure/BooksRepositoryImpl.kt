@@ -36,6 +36,7 @@ class BooksRepositoryImpl(
             .from(BOOKS)
             .innerJoin(AUTHORS).on(AUTHORS.AUTHOR_ID.eq(BOOKS.AUTHOR_ID))
             .where(condition)
+            .orderBy(BOOKS.BOOK_ID.desc())
             .fetch()
             .map {
                 BookDto(
