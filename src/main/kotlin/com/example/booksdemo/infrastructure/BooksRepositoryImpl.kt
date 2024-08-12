@@ -7,6 +7,7 @@ import com.example.booksdemo.domain.dto.BookDto
 import com.example.booksdemo.domain.repository.BooksRepository
 import org.jooq.Condition
 import org.jooq.DSLContext
+import org.jooq.Record
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
@@ -16,7 +17,7 @@ class BooksRepositoryImpl(
     private val dslContext: DSLContext,
 ) : BooksRepository {
 
-    override fun findById(bookId: Int): BooksRecord? {
+    override fun findByBookId(bookId: Int): BooksRecord? {
         return this.dslContext.select()
             .from(BOOKS)
             .where(BOOKS.BOOK_ID.eq(bookId))
@@ -38,14 +39,17 @@ class BooksRepositoryImpl(
             .where(condition)
             .orderBy(BOOKS.BOOK_ID.desc())
             .fetch()
-            .map {
-                BookDto(
-                    bookId = it[BOOKS.BOOK_ID]!!,
-                    title = it[BOOKS.TITLE]!!,
-                    authorId = it[BOOKS.AUTHOR_ID],
-                    authorName = it[AUTHORS.NAME],
-                )
-            }
+            .map { this.toBookDto(it) }
+    }
+
+    override fun findByAuthorId(authorId: Int?): List<BookDto> {
+        return this.dslContext.select()
+            .from(BOOKS)
+            .innerJoin(AUTHORS).on(AUTHORS.AUTHOR_ID.eq(BOOKS.AUTHOR_ID))
+            .where(BOOKS.AUTHOR_ID.eq(authorId))
+            .orderBy(BOOKS.BOOK_ID.desc())
+            .fetch()
+            .map { this.toBookDto(it) }
     }
 
     override fun insert(title: String, authorId: Int): BooksRecord {
@@ -64,5 +68,14 @@ class BooksRepositoryImpl(
             .set(BOOKS.UPDATED_AT, LocalDateTime.now())
             .where(BOOKS.BOOK_ID.eq(bookId))
             .execute()
+    }
+
+    private fun toBookDto(record: Record): BookDto {
+        return BookDto(
+            bookId = record[BOOKS.BOOK_ID]!!,
+            title = record[BOOKS.TITLE]!!,
+            authorId = record[BOOKS.AUTHOR_ID],
+            authorName = record[AUTHORS.NAME],
+        )
     }
 }
