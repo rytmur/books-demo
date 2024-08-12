@@ -49,6 +49,19 @@ class BookService(
         )
     }
 
+    @Transactional(readOnly = true)
+    @Throws(IllegalArgumentException::class)
+    fun getBookDetail(bookId: Int): BookDto {
+        return booksRepository.findById(bookId)?.let { booksRecord ->
+            BookDto(
+                bookId = booksRecord.bookId!!,
+                title = booksRecord.title,
+                authorId = booksRecord.authorId,
+                authorName = authorsRepository.findById(booksRecord.authorId)?.name,
+            )
+        } ?: throw IllegalArgumentException("書籍情報が登録されていません")
+    }
+
     @Transactional(readOnly = false)
     @Throws(IllegalArgumentException::class)
     fun editBook(bookId: Int, title: String, authorId: Int?, authorName: String?): BookDto {

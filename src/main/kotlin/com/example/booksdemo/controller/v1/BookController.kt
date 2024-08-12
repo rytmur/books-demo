@@ -44,6 +44,17 @@ class BookController(
     }
 
     /**
+     * 書籍詳細情報の取得を行う
+     *
+     * @param bookId
+     * @return
+     */
+    @GetMapping("{bookId}")
+    fun getBookDetail(@PathVariable bookId: Int): ResponseEntity<BookDto> {
+        return ResponseEntity.ok(bookService.getBookDetail(bookId))
+    }
+
+    /**
      * 書籍情報の修正を行う
      *
      * @param request
