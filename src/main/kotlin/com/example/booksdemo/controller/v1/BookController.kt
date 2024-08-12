@@ -16,7 +16,7 @@ class BookController(
     /**
      * 書籍の検索を行う
      *
-     * @param query
+     * @param query 検索条件
      * @return
      */
     @GetMapping("search")
@@ -46,7 +46,7 @@ class BookController(
     /**
      * 書籍詳細情報の取得を行う
      *
-     * @param bookId
+     * @param bookId 書籍ID
      * @return
      */
     @GetMapping("{bookId}")

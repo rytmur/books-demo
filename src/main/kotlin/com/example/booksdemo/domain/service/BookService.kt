@@ -13,11 +13,26 @@ class BookService(
     private val booksRepository: BooksRepository,
     private val authorsRepository: AuthorsRepository,
 ) {
+    /**
+     * 書籍を検索する
+     *
+     * @param title 書籍タイトル（部分一致）
+     * @param authorId 著者ID
+     * @return 取得した書籍情報一覧
+     */
     @Transactional(readOnly = true)
     fun searchBooks(title: String?, authorId: Int?): List<BookDto> {
         return booksRepository.findByCondition(title, authorId)
     }
 
+    /**
+     * 書籍を新規登録する
+     *
+     * @param title 書籍タイトル
+     * @param authorId 著者ID
+     * @param authorName 著者名（著者も新規登録する場合に使用する）
+     * @return 書籍情報
+     */
     @Transactional(readOnly = false)
     @Throws(IllegalArgumentException::class)
     fun addBook(title: String, authorId: Int?, authorName: String?): BookDto {
@@ -49,6 +64,12 @@ class BookService(
         )
     }
 
+    /**
+     * 書籍の詳細情報を取得する
+     *
+     * @param bookId 書籍ID
+     * @return 書籍情報
+     */
     @Transactional(readOnly = true)
     @Throws(IllegalArgumentException::class)
     fun getBookDetail(bookId: Int): BookDto {
@@ -62,6 +83,15 @@ class BookService(
         } ?: throw IllegalArgumentException("書籍情報が登録されていません")
     }
 
+    /**
+     * 書籍情報を更新する
+     *
+     * @param bookId 書籍ID
+     * @param title 書籍タイトル
+     * @param authorId 著者ID
+     * @param authorName 著者名（著者も新規登録する場合に使用する）
+     * @return 書籍情報
+     */
     @Transactional(readOnly = false)
     @Throws(IllegalArgumentException::class)
     fun editBook(bookId: Int, title: String, authorId: Int?, authorName: String?): BookDto {
