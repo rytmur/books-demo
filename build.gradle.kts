@@ -1,3 +1,9 @@
+buildscript {
+	dependencies {
+		classpath("org.flywaydb:flyway-database-postgresql:10.17.0")
+	}
+}
+
 plugins {
 	id("org.springframework.boot") version "3.3.2"
 	id("io.spring.dependency-management") version "1.1.6"
@@ -30,8 +36,8 @@ dependencies {
 	implementation("org.jooq:jooq")
 	implementation("org.jooq:jooq-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.postgresql:postgresql")
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
-	runtimeOnly("org.postgresql:postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
