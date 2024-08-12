@@ -52,7 +52,7 @@ class BookService(
     @Transactional(readOnly = true)
     @Throws(IllegalArgumentException::class)
     fun getBookDetail(bookId: Int): BookDto {
-        return booksRepository.findById(bookId)?.let { booksRecord ->
+        return booksRepository.findByBookId(bookId)?.let { booksRecord ->
             BookDto(
                 bookId = booksRecord.bookId!!,
                 title = booksRecord.title,

@@ -4,7 +4,7 @@ import com.example.booksdb.jooq.gen.tables.records.BooksRecord
 import com.example.booksdemo.domain.dto.BookDto
 
 interface BooksRepository {
-    fun findById(bookId: Int): BooksRecord?
+    fun findByBookId(bookId: Int): BooksRecord?
 
     fun findByCondition(title: String?, authorId: Int?): List<BookDto>
 
