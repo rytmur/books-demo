@@ -82,12 +82,7 @@ jooq {
 			database {
 				name = "org.jooq.meta.postgres.PostgresDatabase"
 				includes = ".*"
-				excludes = """
-				     UNUSED_TABLE                # This table (unqualified name) should not be generated
-				   | PREFIX_.*                   # Objects with a given prefix should not be generated
-				   | SECRET_SCHEMA\.SECRET_TABLE # This table (qualified name) should not be generated
-				   | SECRET_ROUTINE              # This routine (unqualified name) ...
-			    """
+				excludes = "flyway_schema_history"
 				inputSchema = "public"
 			}
 			generate {
